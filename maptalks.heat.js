@@ -4,9 +4,9 @@
 
 var maptalks;
 
-if (typeof module !== 'undefined' && module.exports)  {
-    exports = module.exports = maptalks.HeatLayer;
-    maptalks = require('maptalks');
+var nodeEnv = typeof module !== 'undefined' && module.exports;
+if (nodeEnv)  {
+    maptalks = require('maptalks');      
 } else {
     maptalks = window.maptalks;
 }
@@ -334,4 +334,7 @@ simpleheat.prototype = {
     }
 };
 
+if (nodeEnv) {
+    exports = module.exports = maptalks.HeatLayer;    
+}
 })();
