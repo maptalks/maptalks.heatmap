@@ -28,16 +28,16 @@ maptalks.HeatLayer = maptalks.Layer.extend({
 
     setData : function(heats) {
         this._heats = heats;
-        return this._redraw();
+        return this.redraw();
     },
 
     addPoint : function(heat) {
         this._heats.push(heat);
-        return this._redraw();
+        return this.redraw();
     },
 
     redraw : function() {
-        this._getRenderer.render();
+        this._getRenderer().render();
         return this;
     },
 
@@ -46,21 +46,47 @@ maptalks.HeatLayer = maptalks.Layer.extend({
             return true;
         }
         return false;
-    }
+    },
 
+    _getHeatRadius:function() {
+        if (!this._getRenderer()) {
+            return null;
+        }
+        return this._getRenderer()._heatRadius;
+    }
 });
 
 /**
  * Export the HeatLayer's profile JSON.
  * @return {Object} layer's profile JSON
  */
-maptalks.HeatLayer.prototype.toJSON=function() {
+maptalks.HeatLayer.prototype.toJSON=function(options) {
+    if (!options) {
+        options = {};
+    }
     var profile = {
         "type"      : 'HeatLayer',
         "id"        : this.getId(),
-        "options"   : this.config(),
-        "data"      : this.getData()
+        "options"   : this.config()
     };
+    var data = this.getData();
+    if (options['clipExtent']) {
+        var clipExtent = new maptalks.Extent(options['clipExtent']);
+        var r = this._getHeatRadius();
+        if (r) {
+            clipExtent = clipExtent._expand(r);
+        }
+        var clipped = [];
+        for (var i = 0, len = data.length; i < len; i++) {
+            if (clipExtent.contains(new maptalks.Coordinate(data[i][0], data[i][1]))) {
+                clipped.push(data[i]);
+            }
+        }
+        profile['data'] = clipped;
+    } else {
+        profile['data'] = data;
+    }
+
     return profile;
 }
 
@@ -134,6 +160,8 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
             offsetX = panePos.x % cellSize,
             offsetY = panePos.y % cellSize,
             i, len, heat, p, alt, cell, x, y, j, len2, k;
+
+        this._heatRadius = r;
         // console.time('process');
         for (i = 0, len = heats.length; i < len; i++) {
             heat = heats[i];
@@ -226,7 +254,7 @@ maptalks.HeatLayer.registerRenderer('canvas', maptalks.renderer.heatlayer.Canvas
 function simpleheat(canvas) {
     if (!(this instanceof simpleheat)) return new simpleheat(canvas);
 
-    this._canvas = canvas = typeof canvas === 'string' ? document.getElementById(canvas) : canvas;
+    this._canvas = canvas = ( typeof canvas === 'string' && typeof document !== 'undefined' ) ? document.getElementById(canvas) : canvas;
 
     this._ctx = canvas.getContext('2d');
     this._width = canvas.width;
@@ -272,7 +300,7 @@ simpleheat.prototype = {
         blur = blur === undefined ? 15 : blur;
 
         // create a grayscale blurred circle image that we'll use for drawing points
-        var circle = this._circle = document.createElement('canvas'),
+        var circle = this._circle = this._createCanvas(),
             ctx = circle.getContext('2d'),
             r2 = this._r = r + blur;
 
@@ -297,7 +325,7 @@ simpleheat.prototype = {
 
     gradient: function (grad) {
         // create a 256x1 gradient that we'll use to turn a grayscale heatmap into a colored one
-        var canvas = document.createElement('canvas'),
+        var canvas = this._createCanvas(),
             ctx = canvas.getContext('2d'),
             gradient = ctx.createLinearGradient(0, 0, 0, 256);
 
@@ -305,7 +333,7 @@ simpleheat.prototype = {
         canvas.height = 256;
 
         for (var i in grad) {
-            gradient.addColorStop(i, grad[i]);
+            gradient.addColorStop(parseFloat(i), grad[i]);
         }
 
         ctx.fillStyle = gradient;
@@ -348,6 +376,15 @@ simpleheat.prototype = {
                 pixels[i + 1] = gradient[j + 1];
                 pixels[i + 2] = gradient[j + 2];
             }
+        }
+    },
+
+    _createCanvas:function() {
+        if (typeof document !== 'undefined') {
+            return document.createElement('canvas');
+        } else {
+            //node-canvas
+            return new this._canvas.constructor(1, 1);
         }
     }
 };
