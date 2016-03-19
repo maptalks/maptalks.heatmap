@@ -2,6 +2,15 @@
 (function() {
 "use strict";
 
+var maptalks;
+
+if (typeof module !== 'undefined' && module.exports)  {
+    exports = module.exports = maptalks.HeatLayer;
+    maptalks = require('maptalks');
+} else {
+    maptalks = window.maptalks;
+}
+
 maptalks.HeatLayer = maptalks.Layer.extend({
     options: {
         'renderer' : 'canvas'
