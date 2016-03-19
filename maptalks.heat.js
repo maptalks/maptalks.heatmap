@@ -114,7 +114,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._registerEvents();
     },
 
-    render:function() {
+    _render:function() {
         var map = this.getMap();
         if (!map) {
             return;
@@ -211,8 +211,8 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._heater.data(data).draw(layer.options['minOpacity']);
         // console.timeEnd('draw ' + data.length);
         //
-        this._fireLoadedEvent();
         this._requestMapToRender();
+        this._fireLoadedEvent();
     },
 
     getCanvasImage:function() {
