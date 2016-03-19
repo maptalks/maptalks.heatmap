@@ -50,6 +50,33 @@ maptalks.HeatLayer = maptalks.Layer.extend({
 
 });
 
+/**
+ * Export the HeatLayer's profile JSON.
+ * @return {Object} layer's profile JSON
+ */
+maptalks.HeatLayer.prototype.toJSON=function() {
+    var profile = {
+        "type"      : 'HeatLayer',
+        "id"        : this.getId(),
+        "options"   : this.config(),
+        "data"      : this.getData()
+    };
+    return profile;
+}
+
+/**
+ * Reproduce a HeatLayer from layer's profile JSON.
+ * @param  {Object} layerJSON - layer's profile JSON
+ * @return {maptalks.HeatLayer}
+ * @static
+ * @private
+ * @function
+ */
+maptalks.HeatLayer._fromJSON=function(layerJSON) {
+    if (!layerJSON || layerJSON['type'] !== 'HeatLayer') {return null;}
+    return new maptalks.HeatLayer(layerJSON['id'], layerJSON['data'], layerJSON['options']);
+}
+
 maptalks.Util.extend(maptalks.HeatLayer, maptalks.Renderable);
 
 maptalks.renderer.heatlayer = {};
@@ -74,6 +101,11 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         var viewExtent = map._getViewExtent();
         var maskViewExtent = this._prepareCanvas(viewExtent);
         if (maskViewExtent) {
+            //out of layer mask
+            if (!maskViewExtent.intersects(viewExtent)) {
+                this._fireLoadedEvent();
+                return;
+            }
             viewExtent = viewExtent.intersection(maskViewExtent);
         }
         var viewMin = viewExtent.getMin();
@@ -163,8 +195,6 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         var point = this._canvasFullExtent.getMin();
         return {'image':this._canvas,'layer':this._layer,'point':this.getMap().viewPointToContainerPoint(point),'size':size};
     },
-
-
 
     _registerEvents:function() {
         var map = this.getMap();
