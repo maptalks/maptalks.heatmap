@@ -6,7 +6,7 @@ var maptalks;
 
 var nodeEnv = typeof module !== 'undefined' && module.exports;
 if (nodeEnv)  {
-    maptalks = require('maptalks');      
+    maptalks = require('maptalks');
 } else {
     maptalks = window.maptalks;
 }
@@ -58,7 +58,6 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
         this._layer = layer;
-        this._mapRender = layer.getMap()._getRenderer();
         this._registerEvents();
     },
 
@@ -67,7 +66,8 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         if (!map) {
             return;
         }
-        if (!this._layer.isVisible()) {
+        if (!this._layer.isVisible() || this._layer.isEmpty()) {
+            this._fireLoadedEvent();
             return;
         }
         var layer = this.getLayer();
@@ -151,7 +151,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._heater.data(data).draw(layer.options['minOpacity']);
         // console.timeEnd('draw ' + data.length);
         //
-        layer.fire('layerload');
+        this._fireLoadedEvent();
         this._requestMapToRender();
     },
 
@@ -164,15 +164,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         return {'image':this._canvas,'layer':this._layer,'point':this.getMap().viewPointToContainerPoint(point),'size':size};
     },
 
-    setZIndex: function(zindex) {
-        this._requestMapToRender();
-    },
 
-    _requestMapToRender:function() {
-        if (this.getMap()) {
-            this._mapRender.render();
-        }
-    },
 
     _registerEvents:function() {
         var map = this.getMap();
@@ -191,10 +183,6 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
             this._heater._height = this._canvas.height;
             this.render();
         }
-    },
-
-    _fireLoadedEvent:function() {
-        this._layer.fire('layerload');
     }
 });
 
@@ -335,6 +323,6 @@ simpleheat.prototype = {
 };
 
 if (nodeEnv) {
-    exports = module.exports = maptalks.HeatLayer;    
+    exports = module.exports = maptalks.HeatLayer;
 }
 })();
