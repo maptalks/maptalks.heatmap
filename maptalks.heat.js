@@ -12,10 +12,7 @@ if (nodeEnv)  {
 }
 
 maptalks.HeatLayer = maptalks.Layer.extend({
-    options: {
-        'renderer' : 'canvas'
-    },
-
+    
     initialize : function(id, heats, options) {
         this.setId(id);
         this._heats = heats;
@@ -125,7 +122,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         }
         var layer = this.getLayer();
         var viewExtent = map._getViewExtent();
-        var maskViewExtent = this._prepareCanvas(viewExtent);
+        var maskViewExtent = this._prepareCanvas();
         if (maskViewExtent) {
             //out of layer mask
             if (!maskViewExtent.intersects(viewExtent)) {
@@ -139,8 +136,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         if (!this._heater) {
             this._heater = simpleheat(this._canvas);
             this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
-        }
-        this._canvasFullExtent = viewExtent;
+        }        
         //a cache of heat points' viewpoints.
         if (!this._heatViews) {
             this._heatViews = [];
@@ -213,15 +209,6 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         //
         this._requestMapToRender();
         this._fireLoadedEvent();
-    },
-
-    getCanvasImage:function() {
-        if (!this._canvasFullExtent || this._layer.isEmpty()) {
-            return null;
-        }
-        var size = this._canvasFullExtent.getSize();
-        var point = this._canvasFullExtent.getMin();
-        return {'image':this._canvas,'layer':this._layer,'point':this.getMap().viewPointToContainerPoint(point),'size':size};
     },
 
     _registerEvents:function() {
