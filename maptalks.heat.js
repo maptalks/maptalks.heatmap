@@ -113,13 +113,6 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     _render:function() {
         var map = this.getMap();
-        if (!map) {
-            return;
-        }
-        if (!this._layer.isVisible() || this._layer.isEmpty()) {
-            this._fireLoadedEvent();
-            return;
-        }
         var layer = this.getLayer();
         var viewExtent = map._getViewExtent();
         var maskViewExtent = this._prepareCanvas();
