@@ -32,6 +32,15 @@ maptalks.HeatLayer = maptalks.Layer.extend({
         this._heats.push(heat);
         return this.redraw();
     },
+    
+    getMax: function() {
+        return this.options['max'];  
+    },
+    
+    setMax: function(max) {
+        this.options['max'] = max;
+        return this.redraw();
+    },
 
     redraw : function() {
         this._getRenderer().render();
@@ -44,7 +53,13 @@ maptalks.HeatLayer = maptalks.Layer.extend({
         }
         return false;
     },
-
+    
+    clear: function() {
+      delete this._heats;
+      this.fire('clear');
+      return this;  
+    },
+    
     _getHeatRadius:function() {
         if (!this._getRenderer()) {
             return null;
@@ -100,17 +115,19 @@ maptalks.HeatLayer._fromJSON=function(layerJSON) {
     return new maptalks.HeatLayer(layerJSON['id'], layerJSON['data'], layerJSON['options']);
 }
 
-maptalks.Util.extend(maptalks.HeatLayer, maptalks.Renderable);
-
 maptalks.renderer.heatlayer = {};
 
 maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
-        this._layer = layer;
-        this._registerEvents();
+        this._layer = layer;        
     },
-
+    
+    remove: function() {
+        delete this._heater;
+        this._requestMapToRender();
+    },
+    
     _render:function() {
         var map = this.getMap();
         var layer = this.getLayer();
@@ -127,9 +144,12 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         var viewMin = viewExtent.getMin();
 
         if (!this._heater) {
-            this._heater = simpleheat(this._canvas);
+            this._heater = simpleheat(this._canvas);            
             this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
         }        
+        if (layer.getMax()) {
+            this._heater.max(layer.getMax());
+        }
         //a cache of heat points' viewpoints.
         if (!this._heatViews) {
             this._heatViews = [];
@@ -202,26 +222,20 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         //
         this._requestMapToRender();
         this._fireLoadedEvent();
+    },    
+      
+    _onZoomEnd: function() {
+        delete this._heatViews;
+        this.render();
     },
-
-    _registerEvents:function() {
-        var map = this.getMap();
-        map.on('_moveend _zoomstart _zoomend _resize',this._onMapEvent,this);
-    },
-
-    _onMapEvent:function(param) {
-        if (param['type'] === '_zoomend') {
-            delete this._heatViews;
-            this.render();
-        } else if (param['type'] === '_moveend') {
-            this.render();
-        } else if (param['type'] === '_resize') {
-            this._resizeCanvas();
-            this._heater._width  = this._canvas.width;
-            this._heater._height = this._canvas.height;
-            this.render();
-        }
-    }
+    
+    _onResize: function() {
+        this._resizeCanvas();
+        this._heater._width  = this._canvas.width;
+        this._heater._height = this._canvas.height;
+        this.render();
+    }    
+       
 });
 
 maptalks.HeatLayer.registerRenderer('canvas', maptalks.renderer.heatlayer.Canvas);
