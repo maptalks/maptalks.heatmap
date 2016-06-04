@@ -12,7 +12,7 @@ if (nodeEnv)  {
 }
 
 maptalks.HeatLayer = maptalks.Layer.extend({
-    
+
     initialize : function(id, heats, options) {
         this.setId(id);
         this._heats = heats;
@@ -32,11 +32,11 @@ maptalks.HeatLayer = maptalks.Layer.extend({
         this._heats.push(heat);
         return this.redraw();
     },
-    
+
     getMax: function() {
-        return this.options['max'];  
+        return this.options['max'];
     },
-    
+
     setMax: function(max) {
         this.options['max'] = max;
         return this.redraw();
@@ -53,13 +53,13 @@ maptalks.HeatLayer = maptalks.Layer.extend({
         }
         return false;
     },
-    
+
     clear: function() {
       delete this._heats;
       this.fire('clear');
-      return this;  
+      return this;
     },
-    
+
     _getHeatRadius:function() {
         if (!this._getRenderer()) {
             return null;
@@ -120,33 +120,34 @@ maptalks.renderer.heatlayer = {};
 maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
-        this._layer = layer;        
+        this._layer = layer;
     },
-    
+
     remove: function() {
         delete this._heater;
         this._requestMapToRender();
     },
-    
+
     _render:function() {
-        var map = this.getMap();
-        var layer = this.getLayer();
-        var viewExtent = map._getViewExtent();
-        var maskViewExtent = this._prepareCanvas();
+        var map = this.getMap(),
+            layer = this.getLayer(),
+            viewExtent = map._getViewExtent(),
+            maskViewExtent = this._prepareCanvas(),
+            displayExtent = viewExtent;
         if (maskViewExtent) {
             //out of layer mask
             if (!maskViewExtent.intersects(viewExtent)) {
                 this._fireLoadedEvent();
                 return;
             }
-            viewExtent = viewExtent.intersection(maskViewExtent);
+            displayExtent = viewExtent.intersection(maskViewExtent);
         }
         var viewMin = viewExtent.getMin();
 
         if (!this._heater) {
-            this._heater = simpleheat(this._canvas);            
+            this._heater = simpleheat(this._canvas);
             this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
-        }        
+        }
         if (layer.getMax()) {
             this._heater.max(layer.getMax());
         }
@@ -160,6 +161,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
             r = this._heater._r,
             size = map.getSize(),
             heatExtent = viewExtent.expand(r),
+            displayExtent = displayExtent.expand(r),
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
             maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
             v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
@@ -178,7 +180,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
                 this._heatViews[i] = map.coordinateToViewPoint(new maptalks.Coordinate(heat[0], heat[1]));
             }
             p = this._heatViews[i];
-            if (heatExtent.contains(p)) {
+            if (displayExtent.contains(p)) {
                 x = Math.floor((p.x - viewMin.x - offsetX) / cellSize) + 2;
                 y = Math.floor((p.y - viewMin.y - offsetY) / cellSize) + 2;
 
@@ -222,20 +224,20 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         //
         this._requestMapToRender();
         this._fireLoadedEvent();
-    },    
-      
+    },
+
     _onZoomEnd: function() {
         delete this._heatViews;
         this.render();
     },
-    
+
     _onResize: function() {
         this._resizeCanvas();
         this._heater._width  = this._canvas.width;
         this._heater._height = this._canvas.height;
         this.render();
-    }    
-       
+    }
+
 });
 
 maptalks.HeatLayer.registerRenderer('canvas', maptalks.renderer.heatlayer.Canvas);
