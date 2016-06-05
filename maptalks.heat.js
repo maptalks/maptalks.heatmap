@@ -121,12 +121,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
         this._layer = layer;
-    },
-
-    remove: function() {
-        delete this._heater;
-        this._requestMapToRender();
-    },
+    },    
 
     _render:function() {
         var map = this.getMap(),
@@ -226,16 +221,21 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._fireLoadedEvent();
     },
 
-    _onZoomEnd: function() {
+    _onZoomEnd: function () {
         delete this._heatViews;
         this.render();
     },
 
-    _onResize: function() {
+    _onResize: function () {
         this._resizeCanvas();
         this._heater._width  = this._canvas.width;
         this._heater._height = this._canvas.height;
         this.render();
+    },
+    
+    _onRemove: function () {
+        delete this._heatViews;
+        delete this._heater;     
     }
 
 });
