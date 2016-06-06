@@ -127,7 +127,17 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
     _render:function() {
         var map = this.getMap(),
             layer = this.getLayer(),
-            viewExtent = map._getViewExtent();
+            viewExtent = map._getViewExtent(),
+            maskViewExtent = this._prepareCanvas(),
+            displayExtent = viewExtent;
+        if (maskViewExtent) {
+            //out of layer mask
+            if (!maskViewExtent.intersects(viewExtent)) {
+                this._complete();
+                return;
+            }
+            displayExtent = viewExtent.intersection(maskViewExtent);
+        }
         var viewMin = viewExtent.getMin();
 
         if (!this._heater) {
@@ -150,7 +160,8 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         var data = [],
             r = this._heater._r,
             size = map.getSize(),
-            displayExtent = (this._displayExtent || viewExtent).expand(r),
+            heatExtent = viewExtent.expand(r),
+            displayExtent = displayExtent.expand(r),
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
             maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
             v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
