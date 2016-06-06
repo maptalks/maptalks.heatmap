@@ -56,6 +56,7 @@ maptalks.HeatLayer = maptalks.Layer.extend({
 
     clear: function() {
       delete this._heats;
+      this.redraw();
       this.fire('clear');
       return this;
     },
@@ -126,17 +127,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
     _render:function() {
         var map = this.getMap(),
             layer = this.getLayer(),
-            viewExtent = map._getViewExtent(),
-            maskViewExtent = this._prepareCanvas(),
-            displayExtent = viewExtent;
-        if (maskViewExtent) {
-            //out of layer mask
-            if (!maskViewExtent.intersects(viewExtent)) {
-                this._fireLoadedEvent();
-                return;
-            }
-            displayExtent = viewExtent.intersection(maskViewExtent);
-        }
+            viewExtent = map._getViewExtent();
         var viewMin = viewExtent.getMin();
 
         if (!this._heater) {
@@ -152,11 +143,14 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         }
 
         var heats = layer._heats;
+        if (!maptalks.Util.isArrayHasData(heats)) {
+            this._complete();
+            return;
+        }
         var data = [],
             r = this._heater._r,
             size = map.getSize(),
-            heatExtent = viewExtent.expand(r),
-            displayExtent = displayExtent.expand(r),
+            displayExtent = (this._displayExtent || viewExtent).expand(r),
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
             maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
             v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
@@ -217,8 +211,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._heater.data(data).draw(layer.options['minOpacity']);
         // console.timeEnd('draw ' + data.length);
         //
-        this._requestMapToRender();
-        this._fireLoadedEvent();
+        this._complete();
     },
 
     _onZoomEnd: function () {
