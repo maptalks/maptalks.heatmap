@@ -122,9 +122,9 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
         this._layer = layer;
-    },    
+    },
 
-    _render:function() {
+    draw:function() {
         var map = this.getMap(),
             layer = this.getLayer(),
             viewExtent = map._getViewExtent(),
@@ -236,10 +236,10 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._heater._height = this._canvas.height;
         this.render();
     },
-    
+
     _onRemove: function () {
         delete this._heatViews;
-        delete this._heater;     
+        delete this._heater;
     }
 
 });
@@ -384,7 +384,7 @@ simpleheat.prototype = {
             return document.createElement('canvas');
         } else {
             //node-canvas
-            return new this._canvas.constructor(1, 1);
+            return new this._canvas.constructor();
         }
     }
 };
