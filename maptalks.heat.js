@@ -117,7 +117,7 @@ maptalks.HeatLayer._fromJSON=function(layerJSON) {
 
 maptalks.renderer.heatlayer = {};
 
-maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
+maptalks.renderer.heatlayer.Canvas = maptalks.renderer.Canvas.extend({
 
     initialize:function(layer) {
         this._layer = layer;
@@ -127,12 +127,12 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         var map = this.getMap(),
             layer = this.getLayer(),
             extent2d = map._get2DExtent(),
-            maskExtent = this._prepareCanvas(),
+            maskExtent = this.prepareCanvas(),
             displayExtent = extent2d;
         if (maskExtent) {
             //out of layer mask
             if (!maskExtent.intersects(extent2d)) {
-                this._complete();
+                this.completeRender();
                 return;
             }
             displayExtent = extent2d.intersection(maskExtent);
@@ -153,7 +153,7 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
 
         var heats = layer._heats;
         if (!maptalks.Util.isArrayHasData(heats)) {
-            this._complete();
+            this.completeRender();
             return;
         }
         var data = [],
@@ -220,22 +220,21 @@ maptalks.renderer.heatlayer.Canvas=maptalks.renderer.Canvas.extend({
         this._heater.data(data).draw(layer.options['minOpacity']);
         // console.timeEnd('draw ' + data.length);
         //
-        this._complete();
+        this.completeRender();
     },
 
-    _onZoomEnd: function () {
+    onZoomEnd: function () {
         delete this._heatViews;
-        this.render();
+        maptalks.renderer.Canvas.prototype.onZoomEnd.apply(this, arguments);
     },
 
-    _onResize: function () {
-        this._resizeCanvas();
+    onResize: function () {
         this._heater._width  = this._canvas.width;
         this._heater._height = this._canvas.height;
-        this.render();
+        maptalks.renderer.Canvas.prototype.onResize.apply(this, arguments);
     },
 
-    _onRemove: function () {
+    onRemove: function () {
         delete this._heatViews;
         delete this._heater;
     }
