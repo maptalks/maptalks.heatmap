@@ -41,7 +41,7 @@
   "peerDependencies": {
     "maptalks": "<2.0.0"
   },
-  "dependencies" : {
-    "simpleheat" : "^0.3.0"
+  "dependencies": {
+    "simpleheat": "^0.4.0"
   }
 }
