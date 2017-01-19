@@ -90,6 +90,7 @@ describe('Layer', function () {
         var layer = new maptalks.HeatLayer('g', data);
         var json = layer.toJSON();
         var copy = maptalks.Layer.fromJSON(json);
+        expect(data).to.be.eql(copy.getData());
         copy.on('layerload', function () {
             expect(copy).to.be.painted();
             done();

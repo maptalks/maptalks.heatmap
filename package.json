@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/maptalks/maptalks.heat.js.git"
+    "url": "https://github.com/maptalks/maptalks.heatlayer.js.git"
   },
   "main": "dist/maptalks.heat.js",
   "scripts": {
