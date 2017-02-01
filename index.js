@@ -54,15 +54,15 @@ export class HeatLayer extends maptalks.Layer {
     }
 
     /**
-     * Export the HeatLayer's profile JSON.
-     * @return {Object} layer's profile JSON
+     * Export the HeatLayer's JSON.
+     * @return {Object} layer's JSON
      */
     toJSON(options) {
         if (!options) {
             options = {};
         }
-        const profile = {
-            'type'      : 'HeatLayer',
+        const json = {
+            'type'      : this.getJSONType(),
             'id'        : this.getId(),
             'options'   : this.config()
         };
@@ -79,25 +79,25 @@ export class HeatLayer extends maptalks.Layer {
                     clipped.push(data[i]);
                 }
             }
-            profile['data'] = clipped;
+            json['data'] = clipped;
         } else {
-            profile['data'] = data;
+            json['data'] = data;
         }
 
-        return profile;
+        return json;
     }
 
     /**
-     * Reproduce a HeatLayer from layer's profile JSON.
-     * @param  {Object} layerJSON - layer's profile JSON
+     * Reproduce a HeatLayer from layer's JSON.
+     * @param  {Object} json - layer's JSON
      * @return {maptalks.HeatLayer}
      * @static
      * @private
      * @function
      */
-    static fromJSON(layerJSON) {
-        if (!layerJSON || layerJSON['type'] !== 'HeatLayer') { return null; }
-        return new HeatLayer(layerJSON['id'], layerJSON['data'], layerJSON['options']);
+    static fromJSON(json) {
+        if (!json || json['type'] !== this.getJSONType()) { return null; }
+        return new HeatLayer(json['id'], json['data'], json['options']);
     }
 
 
