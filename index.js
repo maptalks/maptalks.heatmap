@@ -96,7 +96,7 @@ export class HeatLayer extends maptalks.Layer {
      * @function
      */
     static fromJSON(json) {
-        if (!json || json['type'] !== this.getJSONType()) { return null; }
+        if (!json || json['type'] !== 'HeatLayer') { return null; }
         return new HeatLayer(json['id'], json['data'], json['options']);
     }
 
