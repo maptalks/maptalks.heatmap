@@ -272,7 +272,7 @@ var HeatLayer = function (_maptalks$Layer) {
 
 
     HeatLayer.fromJSON = function fromJSON(json) {
-        if (!json || json['type'] !== this.getJSONType()) {
+        if (!json || json['type'] !== 'HeatLayer') {
             return null;
         }
         return new HeatLayer(json['id'], json['data'], json['options']);
