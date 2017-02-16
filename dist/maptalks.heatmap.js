@@ -1,5 +1,5 @@
 /*!
- * maptalks.heatmap v0.2.0
+ * maptalks.heatmap v0.2.1
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
@@ -207,7 +207,11 @@ var HeatLayer = function (_maptalks$Layer) {
     };
 
     HeatLayer.prototype.redraw = function redraw() {
-        this._getRenderer().render();
+        var renderer$$1 = this._getRenderer();
+        if (renderer$$1) {
+            renderer$$1.clearHeatCache();
+            renderer$$1.render();
+        }
         return this;
     };
 
@@ -407,8 +411,12 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
     };
 
     _class.prototype.onRemove = function onRemove() {
-        delete this._heatViews;
+        this.clearHeatCache();
         delete this._heater;
+    };
+
+    _class.prototype.clearHeatCache = function clearHeatCache() {
+        delete this._heatViews;
     };
 
     return _class;
