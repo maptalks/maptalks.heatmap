@@ -35,7 +35,11 @@ export class HeatLayer extends maptalks.Layer {
     }
 
     redraw() {
-        this._getRenderer().render();
+        const renderer = this._getRenderer();
+        if (renderer) {
+            renderer.clearHeatCache();
+            renderer.render();
+        }
         return this;
     }
 
@@ -219,7 +223,11 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
     }
 
     onRemove() {
-        delete this._heatViews;
+        this.clearHeatCache();
         delete this._heater;
+    }
+
+    clearHeatCache() {
+        delete this._heatViews;
     }
 });

@@ -123,4 +123,29 @@ describe('Layer', function () {
         })
         .addTo(map);
     });
+
+    it('should update when setting data', function (done) {
+        var layer = new maptalks.HeatLayer('g');
+        layer.once('layerload', function () {
+            expect(layer).to.be.painted(0, 0, [0,0,255]);
+            layer.once('layerload', function () {
+                expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+                done();
+            });
+            layer.setData([[0, 0, 5], [0, 0, 5]]);
+        })
+        .setData([[0, 0, 2]])
+        .addTo(map);
+    });
+
+    it('should update immediately with drawImmediate options', function () {
+        var layer = new maptalks.HeatLayer('g', {
+            'drawImmediate' : true
+        })
+        .setData([[0, 0, 2]])
+        .addTo(map);
+        expect(layer).to.be.painted(0, 0, [0,0,255]);
+        layer.setData([[0, 0, 5], [0, 0, 5]]);
+        expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+    });
 });
