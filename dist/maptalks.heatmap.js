@@ -1,5 +1,5 @@
 /*!
- * maptalks.heatmap v0.2.1
+ * maptalks.heatmap v0.2.2
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
@@ -317,7 +317,7 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
             }
             displayExtent = extent2d.intersection(maskExtent);
         }
-        var leftTop = extent2d.getMin();
+        var leftTop = map._pointToContainerPoint(extent2d.getMin());
 
         if (!this._heater) {
             this._heater = simpleheat_1(this.canvas);
@@ -367,6 +367,7 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
             }
             p = this._heatViews[i];
             if (displayExtent.contains(p)) {
+                p = map._pointToContainerPoint(p);
                 x = Math.floor((p.x - leftTop.x - offsetX) / cellSize) + 2;
                 y = Math.floor((p.y - leftTop.y - offsetY) / cellSize) + 2;
 
