@@ -132,7 +132,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             }
             displayExtent = extent2d.intersection(maskExtent);
         }
-        var leftTop = extent2d.getMin();
+        var leftTop = map._pointToContainerPoint(extent2d.getMin());
 
         if (!this._heater) {
             this._heater = simpleheat(this.canvas);
@@ -172,6 +172,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             }
             p = this._heatViews[i];
             if (displayExtent.contains(p)) {
+                p = map._pointToContainerPoint(p);
                 x = Math.floor((p.x - leftTop.x - offsetX) / cellSize) + 2;
                 y = Math.floor((p.y - leftTop.y - offsetY) / cellSize) + 2;
 
