@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/maptalks/maptalks.heatmap.git"
   },
-  "main": "dist/maptalks.heat.js",
+  "main": "dist/maptalks.heatmap.js",
   "scripts": {
     "lint": "eslint index.js test/**/*.js",
     "test": "gulp test",
