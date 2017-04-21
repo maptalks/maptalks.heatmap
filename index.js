@@ -1,6 +1,14 @@
 import * as maptalks from 'maptalks';
 import simpleheat from 'simpleheat';
 
+const options = {
+    'max' : 1,
+    'gradient' : { 0.4: 'blue', 0.65: 'lime', 1: 'red' },
+    'radius' : 25,
+    'blur' : 15,
+    'minOpacity' : 0.05
+};
+
 export class HeatLayer extends maptalks.Layer {
     constructor(id, heats, options) {
         if (!Array.isArray(heats)) {
@@ -16,22 +24,30 @@ export class HeatLayer extends maptalks.Layer {
     }
 
     setData(heats) {
-        this._heats = heats;
+        this._heats = heats || [];
         return this.redraw();
     }
 
     addPoint(heat) {
-        this._heats.push(heat);
+        if (!heat) {
+            return this;
+        }
+        if (heat[0] && Array.isArray(heat[0])) {
+            maptalks.Util.pushIn(this._heats, heat);
+        } else {
+            this._heats.push(heat);
+        }
         return this.redraw();
     }
 
-    getMax() {
-        return this.options['max'];
-    }
-
-    setMax(max) {
-        this.options['max'] = max;
-        return this.redraw();
+    onConfig(conf) {
+        super.onConfig.apply(this, arguments);
+        for (const p in conf) {
+            if (options[p]) {
+                return this.redraw();
+            }
+        }
+        return this;
     }
 
     redraw() {
@@ -44,14 +60,14 @@ export class HeatLayer extends maptalks.Layer {
     }
 
     isEmpty() {
-        if (!this._heats || !this._heats.length) {
+        if (!this._heats.length) {
             return true;
         }
         return false;
     }
 
     clear() {
-        delete this._heats;
+        this._heats = [];
         this.redraw();
         this.fire('clear');
         return this;
@@ -113,17 +129,18 @@ export class HeatLayer extends maptalks.Layer {
     }
 }
 
+HeatLayer.mergeOptions(options);
 
 HeatLayer.registerJSONType('HeatLayer');
 
 HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRenderer {
 
     draw() {
-        var map = this.getMap(),
+        const map = this.getMap(),
             layer = this.layer,
             extent2d = map._get2DExtent(),
-            maskExtent = this.prepareCanvas(),
-            displayExtent = extent2d;
+            maskExtent = this.prepareCanvas();
+        let displayExtent = extent2d;
         if (maskExtent) {
             //out of layer mask
             if (!maskExtent.intersects(extent2d)) {
@@ -132,26 +149,25 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             }
             displayExtent = extent2d.intersection(maskExtent);
         }
-        var leftTop = map._pointToContainerPoint(extent2d.getMin());
+        const leftTop = map._pointToContainerPoint(extent2d.getMin());
 
         if (!this._heater) {
             this._heater = simpleheat(this.canvas);
-            this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
         }
-        if (layer.getMax()) {
-            this._heater.max(layer.getMax());
-        }
+        this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
+        this._heater.gradient(layer.options['gradient']);
+        this._heater.max(layer.options['max']);
         //a cache of heat points' viewpoints.
         if (!this._heatViews) {
             this._heatViews = [];
         }
 
-        var heats = layer._heats;
+        const heats = layer._heats;
         if (!maptalks.Util.isArrayHasData(heats)) {
             this.completeRender();
             return;
         }
-        var data = [],
+        const data = [],
             r = this._heater._r,
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
             maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
@@ -160,8 +176,8 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             grid = [],
             panePos = map.offsetPlatform(),
             offsetX = panePos.x % cellSize,
-            offsetY = panePos.y % cellSize,
-            i, len, heat, p, alt, cell, x, y, j, len2, k;
+            offsetY = panePos.y % cellSize;
+        let i, len, heat, p, alt, cell, x, y, j, len2, k;
         displayExtent = displayExtent.expand(r);
         this._heatRadius = r;
         // console.time('process');
