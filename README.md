@@ -27,7 +27,7 @@ IE 9-11, Chrome, Firefox, other modern and mobile browsers.
     * ```minOpacity``` **Number** minimum point opacity (0.05 by default)
     * ```gradient``` **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
 
-```config(key, value)``` > **this** config layer's options and redraw the layer if necessary
+***config(key, value)*** > **this**, config layer's options and redraw the layer if necessary
 ```javascript
 heatLayer.config('max', 10);
 heatLayer.config({
@@ -37,21 +37,21 @@ heatLayer.config({
 });
 ```
 
-```getData``` > **Array[]** get layer's data
+***getData*** > **Array[]**, get layer's data
 
-```setData(data)``` > **this** set new data
+***setData(data)*** > **this**, set new data
 * ```data``` **Array[]** data to set
 
-```addPoint(point)``` > **this** add more points
+***addPoint(point)*** > **this**, add more points
 * ```point``` **Array[]** points to add, [[x, y, value], [x, y, value]..]
 
-```redraw()``` > **this**
+***redraw()*** > **this**
 
-```isEmpty()``` > **Boolean**
+***isEmpty()*** > **Boolean**
 
-```clear()``` > **this**
+***clear()*** > **this**
 
-```toJSON(options)``` > **Object** export the layer's JSON.
+***toJSON(options)*** > **Object**, export the layer's JSON.
 * ```options``` **Object** options
     * ```clipExtent``` **maptalks.Extent** the extent to clip
 ```javascript
