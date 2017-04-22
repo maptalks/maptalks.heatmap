@@ -58,7 +58,7 @@ heatLayer.config('max', 10);
 heatLayer.config({
     'radius' : 80,
     'blur' : 30,
-    'grdient' : {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+    'gradient' : {0.4: 'blue', 0.65: 'lime', 1: 'red'}
 });
 ```
 
@@ -118,11 +118,16 @@ heatLayer.toJSON({
 
 This plugin is written in ES6 and the only source file of this plugin is ```index.js```.
 
+### Scripts
+
 * Watch source changes and generate runnable bundle repeatedly
 ```shell
 $ gulp
 ```
-
+or
+```shell
+$ gulp watch
+```
 * Tests
 ```shell
 $ npm test
