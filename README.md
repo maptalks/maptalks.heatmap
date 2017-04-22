@@ -10,13 +10,33 @@ A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatm
 * Download from [dist directory](https://github.com/maptalks/maptalks.heatmap/tree/gh-pages/dist).
 * Use unpkg CDN: ```https://unpkg.com/maptalks.heatmap/dist/maptalks.heatmap.min.js```
 
+## Usage
+
+As a plugin, ```maptalks.heatmap``` must be loaded after ```maptalks.js``` in browsers.
+```html
+<script type="text/javascript" src="https://unpkg.com/maptalks/dist/maptalks.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/maptalks.heatmap/dist/maptalks.heatmap.min.js"></script>
+<script>
+var data = [[0, 0, 0.3], [0, 0, 0.4], [0, 0, 0.4]];
+var heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
+</script>
+```
+
 ## Supported Browsers
 
 IE 9-11, Chrome, Firefox, other modern and mobile browsers.
 
+## Examples
+
+* A heatmap of [50000 points](https://maptalks.github.io/maptalks.heatmap/demo/). (data from [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat))
+
 ## API Reference
 
-```new maptalks.HeatmapLayer(id, data, options)```
+### `Constructor`
+
+```javascript
+new maptalks.HeatmapLayer(id, data, options)
+```
 
 * ```id``` **String** layer id
 * ```data``` **Array[]** layer data ```[[x, y, value], [x, y, value]..]```
@@ -27,7 +47,10 @@ IE 9-11, Chrome, Firefox, other modern and mobile browsers.
     * ```minOpacity``` **Number** minimum point opacity (0.05 by default)
     * ```gradient``` **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
 
-```config(key, value)``` > **this** config layer's options and redraw the layer if necessary
+### `config(key, value)`
+
+config layer's options and redraw the layer if necessary
+
 ```javascript
 heatLayer.config('max', 10);
 heatLayer.config({
@@ -37,21 +60,46 @@ heatLayer.config({
 });
 ```
 
-```getData``` > **Array[]** get layer's data
+**Returns** `this`
 
-```setData(data)``` > **this** set new data
+### `getData`
+
+get layer's data
+
+**Returns** `Array[]`
+
+### `setData(data)`
+
+set new data
+
 * ```data``` **Array[]** data to set
 
-```addPoint(point)``` > **this** add more points
+**Returns** `this`
+
+### `addPoint(point)`
+
+add more points
+
 * ```point``` **Array[]** points to add, [[x, y, value], [x, y, value]..]
 
-```redraw()``` > **this**
+**Returns** `this`
 
-```isEmpty()``` > **Boolean**
+### `redraw()`
 
-```clear()``` > **this**
+**Returns** `this`
 
-```toJSON(options)``` > **Object** export the layer's JSON.
+### `isEmpty()`
+
+**Returns** `Boolean`
+
+### `clear()`
+
+**Returns** `this`
+
+### `toJSON(options)`
+
+export the layer's JSON.
+
 * ```options``` **Object** options
     * ```clipExtent``` **maptalks.Extent** the extent to clip
 ```javascript
@@ -60,3 +108,5 @@ heatLayer.toJSON({
     'clipExtent' : map.getExtent()
 });
 ```
+
+**Returns** `Object`
