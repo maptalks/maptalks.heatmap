@@ -3,7 +3,13 @@ import simpleheat from 'simpleheat';
 
 const options = {
     'max' : 1,
-    'gradient' : { 0.4: 'blue', 0.65: 'lime', 1: 'red' },
+    'gradient' : {
+        0.4: 'blue',
+        0.6: 'cyan',
+        0.7: 'lime',
+        0.8: 'yellow',
+        1.0: 'red'
+    },
     'radius' : 25,
     'blur' : 15,
     'minOpacity' : 0.05
@@ -155,7 +161,9 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             this._heater = simpleheat(this.canvas);
         }
         this._heater.radius(layer.options['radius'] || this._heater.defaultRadius, layer.options['blur']);
-        this._heater.gradient(layer.options['gradient']);
+        if (layer.options['gradient']) {
+            this._heater.gradient(layer.options['gradient']);
+        }
         this._heater.max(layer.options['max']);
         //a cache of heat points' viewpoints.
         if (!this._heatViews) {
