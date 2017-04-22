@@ -100,8 +100,8 @@ add more points
 
 export the layer's JSON.
 
-* ```options``` **Object** options
-    * ```clipExtent``` **maptalks.Extent** the extent to clip
+* options **Object** options
+    * clipExtent **maptalks.Extent** the extent to clip
 ```javascript
 // only export points in map's current extent.
 heatLayer.toJSON({
