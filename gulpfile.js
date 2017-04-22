@@ -7,9 +7,7 @@ const testHelper = new TestHelper();
 const karmaConfig = require('./karma.config');
 
 gulp.task('build', () => {
-    const rollupConfig = bundleHelper.getDefaultRollupConfig();
-    rollupConfig['sourceMap'] = false;
-    return bundleHelper.bundle('index.js', rollupConfig);
+    return bundleHelper.bundle('index.js');
 });
 
 gulp.task('minify', ['build'], () => {
