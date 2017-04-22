@@ -112,3 +112,32 @@ heatLayer.toJSON({
 ```
 
 **Returns** `Object`
+
+## Develop
+
+This plugin is written in ES6 and the only source file of this plugin is ```index.js```.
+
+* Watch source changes and generate runnable bundle repeatedly
+```shell
+$ gulp
+```
+
+* Tests
+```shell
+$ npm test
+```
+
+* Watch source changes and run tests repeatedly
+```shell
+$ gulp tdd
+```
+
+* Package and generate minified bundles to dist directory
+```shell
+$ gulp minify
+```
+
+* Lint
+```shell
+$ npm run lint
+```
