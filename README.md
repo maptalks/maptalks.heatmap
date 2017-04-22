@@ -1,6 +1,7 @@
 # maptalks.heatmap
 
 [![CircleCI](https://circleci.com/gh/maptalks/maptalks.heatmap.svg?style=shield)](https://circleci.com/gh/maptalks/maptalks.heatmap)
+[![NPM Version](https://img.shields.io/npm/v/maptalks.heatmap.svg)](https://github.com/maptalks/maptalks.heatmap)
 
 A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatmap on maps, based on mourner's [simpleheat](https://github.com/mourner/simpleheat).
 
