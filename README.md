@@ -38,14 +38,14 @@ IE 9-11, Chrome, Firefox, other modern and mobile browsers.
 new maptalks.HeatmapLayer(id, data, options)
 ```
 
-* ```id``` **String** layer id
-* ```data``` **Array[]** layer data ```[[x, y, value], [x, y, value]..]```
-* ```options``` **Object** options
-    * ```max``` **Number** max data value (1 by default) 
-    * ```radius``` **Number** point radius(25 by default)
-    * ```blur``` **Number**  blur radius(15 by default)
-    * ```minOpacity``` **Number** minimum point opacity (0.05 by default)
-    * ```gradient``` **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
+* id **String** layer id
+* data **Array[]** layer data: [[x, y, value], [x, y, value]..]
+* options **Object** options
+    * max **Number** max data value (1 by default) 
+    * radius **Number** point radius(25 by default)
+    * blur **Number**  blur radius(15 by default)
+    * minOpacity **Number** minimum point opacity (0.05 by default)
+    * gradient **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
 
 ### `config(key, value)`
 
@@ -72,7 +72,7 @@ get layer's data
 
 set new data
 
-* ```data``` **Array[]** data to set
+* data **Array[]** data to set
 
 **Returns** `this`
 
@@ -80,7 +80,7 @@ set new data
 
 add more points
 
-* ```point``` **Array[]** points to add, [[x, y, value], [x, y, value]..]
+* point **Array[]** points to add, [[x, y, value], [x, y, value]..]
 
 **Returns** `this`
 
