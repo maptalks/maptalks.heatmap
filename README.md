@@ -4,6 +4,8 @@
 
 A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatmap on maps, based on mourner's [simpleheat](https://github.com/mourner/simpleheat).
 
+![screenshot](https://cloud.githubusercontent.com/assets/13678919/25303099/98ad71fa-277e-11e7-8722-a3435d11e1f5.jpg)
+
 ## Install
 
 * Install with npm: ```npm install maptalks.heatmap```. 
