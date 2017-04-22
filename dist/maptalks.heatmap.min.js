@@ -1,5 +1,5 @@
 /*!
- * maptalks.heatmap v0.2.2
+ * maptalks.heatmap v0.3.0
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
