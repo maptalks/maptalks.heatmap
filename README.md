@@ -7,7 +7,7 @@ A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatm
 ![screenshot](https://cloud.githubusercontent.com/assets/13678919/25303099/98ad71fa-277e-11e7-8722-a3435d11e1f5.jpg)
 
 ## Install
-
+  
 * Install with npm: ```npm install maptalks.heatmap```. 
 * Download from [dist directory](https://github.com/maptalks/maptalks.heatmap/tree/gh-pages/dist).
 * Use unpkg CDN: ```https://unpkg.com/maptalks.heatmap/dist/maptalks.heatmap.min.js```
@@ -104,6 +104,7 @@ export the layer's JSON.
 
 * options **Object** options
     * clipExtent **maptalks.Extent** the extent to clip
+
 ```javascript
 // only export points in map's current extent.
 heatLayer.toJSON({
