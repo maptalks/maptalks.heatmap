@@ -127,12 +127,26 @@ describe('Layer', function () {
     it('should update when setting data', function (done) {
         var layer = new maptalks.HeatLayer('g');
         layer.once('layerload', function () {
-            expect(layer).to.be.painted(0, 0, [0, 0, 255]);
+            expect(layer).to.be.painted(0, 0, [0, 104, 151]);
             layer.once('layerload', function () {
-                expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+                expect(layer).to.be.painted(0, 0, [254, 2, 0]);
                 done();
             });
             layer.setData([[0, 0, 5], [0, 0, 5]]);
+        })
+        .setData([[0, 0, 2]])
+        .addTo(map);
+    });
+
+    it('should update when adding more points', function (done) {
+        var layer = new maptalks.HeatLayer('g');
+        layer.once('layerload', function () {
+            expect(layer).to.be.painted(0, 0, [0, 104, 151]);
+            layer.once('layerload', function () {
+                expect(layer).to.be.painted(0, 0, [254, 2, 0]);
+                done();
+            });
+            layer.addPoint([[0, 0, 5], [0, 0, 5]]);
         })
         .setData([[0, 0, 2]])
         .addTo(map);
@@ -144,8 +158,8 @@ describe('Layer', function () {
         })
         .setData([[0, 0, 2]])
         .addTo(map);
-        expect(layer).to.be.painted(0, 0, [0, 0, 255]);
+        expect(layer).to.be.painted(0, 0, [0, 104, 151]);
         layer.setData([[0, 0, 5], [0, 0, 5]]);
-        expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+        expect(layer).to.be.painted(0, 0, [254, 2, 0]);
     });
 });
