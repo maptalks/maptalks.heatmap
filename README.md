@@ -115,17 +115,19 @@ heatLayer.toJSON({
 
 **Returns** `Object`
 
+## Contributing
+
+We welcome any kind of contributions including issue reportings, pull requests, documentation corrections, feature requests and any other helps.
+
 ## Develop
 
-This plugin is written in ES6 and the only source file of this plugin is ```index.js```.
+The only source file is ```index.js```.
+
+It is written in ES6, transpiled by [babel](https://babeljs.io/) and tested with [mocha](https://mochajs.org) and [expect.js](https://github.com/Automattic/expect.js).
 
 ### Scripts
 
 * Watch source changes and generate runnable bundle repeatedly
-```shell
-$ gulp
-```
-or
 ```shell
 $ gulp watch
 ```
