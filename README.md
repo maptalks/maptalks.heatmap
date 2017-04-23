@@ -127,10 +127,16 @@ It is written in ES6, transpiled by [babel](https://babeljs.io/) and tested with
 
 ### Scripts
 
+* Install dependencies
+```shell
+$ npm install
+```
+
 * Watch source changes and generate runnable bundle repeatedly
 ```shell
 $ gulp watch
 ```
+
 * Tests
 ```shell
 $ npm test
