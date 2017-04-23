@@ -96,11 +96,11 @@ export class HeatLayer extends maptalks.Layer {
         const data = this.getData();
         if (options['clipExtent']) {
             let clipExtent = new maptalks.Extent(options['clipExtent']);
-            let r = this._getHeatRadius();
+            const r = this._getHeatRadius();
             if (r) {
                 clipExtent = clipExtent._expand(r);
             }
-            let clipped = [];
+            const clipped = [];
             for (let i = 0, len = data.length; i < len; i++) {
                 if (clipExtent.contains(new maptalks.Coordinate(data[i][0], data[i][1]))) {
                     clipped.push(data[i]);
