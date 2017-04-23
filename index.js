@@ -16,6 +16,7 @@ const options = {
 };
 
 export class HeatLayer extends maptalks.Layer {
+
     constructor(id, heats, options) {
         if (!Array.isArray(heats)) {
             options = heats;
@@ -156,7 +157,6 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             }
             displayExtent = extent.intersection(maskExtent);
         }
-        // const leftTop = map._pointToContainerPoint(extent.getMin());
 
         if (!this._heater) {
             this._heater = simpleheat(this.canvas);
