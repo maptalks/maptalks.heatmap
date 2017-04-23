@@ -35,7 +35,7 @@ IE 9-11, Chrome, Firefox, other modern and mobile browsers.
 
 ## API Reference
 
-### *`Constructor`*
+### `Constructor`
 
 ```javascript
 new maptalks.HeatmapLayer(id, data, options)
@@ -50,7 +50,7 @@ new maptalks.HeatmapLayer(id, data, options)
     * minOpacity **Number** minimum point opacity (0.05 by default)
     * gradient **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
 
-### *`config(key, value)`*
+### `config(key, value)`
 
 config layer's options and redraw the layer if necessary
 
@@ -65,13 +65,13 @@ heatLayer.config({
 
 **Returns** `this`
 
-### *`getData`*
+### `getData`
 
 get layer's data
 
 **Returns** `Array[]`
 
-### *`setData(data)`*
+### `setData(data)`
 
 set new data
 
@@ -79,7 +79,7 @@ set new data
 
 **Returns** `this`
 
-### *`addPoint(point)`*
+### `addPoint(point)`
 
 add more points
 
@@ -87,19 +87,19 @@ add more points
 
 **Returns** `this`
 
-### *`redraw()`*
+### `redraw()`
 
 **Returns** `this`
 
-### *`isEmpty()`*
+### `isEmpty()`
 
 **Returns** `Boolean`
 
-### *`clear()`*
+### `clear()`
 
 **Returns** `this`
 
-### *`toJSON(options)`*
+### `toJSON(options)`
 
 export the layer's JSON.
 
@@ -115,20 +115,28 @@ heatLayer.toJSON({
 
 **Returns** `Object`
 
+## Contributing
+
+We welcome any kind of contributions including issue reportings, pull requests, documentation corrections, feature requests and any other helps.
+
 ## Develop
 
-This plugin is written in ES6 and the only source file of this plugin is ```index.js```.
+The only source file is ```index.js```.
+
+It is written in ES6, transpiled by [babel](https://babeljs.io/) and tested with [mocha](https://mochajs.org) and [expect.js](https://github.com/Automattic/expect.js).
 
 ### Scripts
 
-* Watch source changes and generate runnable bundle repeatedly
+* Install dependencies
 ```shell
-$ gulp
+$ npm install
 ```
-or
+
+* Watch source changes and generate runnable bundle repeatedly
 ```shell
 $ gulp watch
 ```
+
 * Tests
 ```shell
 $ npm test
