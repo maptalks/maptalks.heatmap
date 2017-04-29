@@ -1,5 +1,5 @@
 /*!
- * maptalks.heatmap v0.3.3
+ * maptalks.heatmap v0.4.0
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
@@ -366,6 +366,10 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
         var data = this._heatData(heats, displayExtent);
         this._heater.data(data).draw(layer.options['minOpacity']);
         this.completeRender();
+    };
+
+    _class.prototype.drawOnInteracting = function drawOnInteracting() {
+        this.draw();
     };
 
     _class.prototype._heatData = function _heatData(heats, displayExtent) {
