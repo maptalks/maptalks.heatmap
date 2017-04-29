@@ -181,6 +181,10 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
         this.completeRender();
     }
 
+    drawOnInteracting() {
+        this.draw();
+    }
+
     _heatData(heats, displayExtent) {
         const map = this.getMap(),
             layer = this.layer;
