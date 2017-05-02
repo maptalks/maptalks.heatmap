@@ -7,6 +7,10 @@ A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatm
 
 ![screenshot](https://cloud.githubusercontent.com/assets/13678919/25303099/98ad71fa-277e-11e7-8722-a3435d11e1f5.jpg)
 
+## Examples
+
+* A heatmap of [50000 points](https://maptalks.github.io/maptalks.heatmap/demo/). (data from [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat))
+
 ## Install
   
 * Install with npm: ```npm install maptalks.heatmap```. 
@@ -28,10 +32,6 @@ var heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
 ## Supported Browsers
 
 IE 9-11, Chrome, Firefox, other modern and mobile browsers.
-
-## Examples
-
-* A heatmap of [50000 points](https://maptalks.github.io/maptalks.heatmap/demo/). (data from [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat))
 
 ## API Reference
 
