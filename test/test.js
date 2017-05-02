@@ -62,7 +62,7 @@ describe('Layer', function () {
 
     it('should show', function (done) {
         var layer = new maptalks.HeatLayer('g', data, { visible : false });
-        layer.once('layerload', function () {
+        layer.once('add', function () {
             expect(layer).not.to.be.painted();
             layer.once('layerload', function () {
                 expect(layer).to.be.painted();
