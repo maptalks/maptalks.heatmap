@@ -61,7 +61,7 @@ export class HeatLayer extends maptalks.Layer {
         const renderer = this._getRenderer();
         if (renderer) {
             renderer.clearHeatCache();
-            renderer.render();
+            renderer.setToRedraw();
         }
         return this;
     }
