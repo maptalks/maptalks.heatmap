@@ -1,10 +1,10 @@
 /*!
- * maptalks.heatmap v0.4.1
+ * maptalks.heatmap v0.5.0
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
 /*!
- * requires maptalks@^0.23.0 
+ * requires maptalks@^0.25.0 
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('maptalks')) :
@@ -235,7 +235,7 @@ var HeatLayer = function (_maptalks$Layer) {
         var renderer$$1 = this._getRenderer();
         if (renderer$$1) {
             renderer$$1.clearHeatCache();
-            renderer$$1.render();
+            renderer$$1.setToRedraw();
         }
         return this;
     };
@@ -466,6 +466,6 @@ exports.HeatLayer = HeatLayer;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.heatmap v0.4.1, requires maptalks@^0.23.0.');
+typeof console !== 'undefined' && console.log('maptalks.heatmap v0.5.0, requires maptalks@^0.25.0.');
 
 })));
