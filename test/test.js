@@ -51,14 +51,15 @@ describe('Layer', function () {
         var layer = new maptalks.HeatLayer('g', data);
         layer.once('layerload', function () {
             map.on('zoomend', function () {
-                expect(layer).to.be.painted();
-                done();
+                map.on('frameend', function () {
+                    expect(layer).to.be.painted();
+                    done();
+                });
             });
             map.zoomIn();
         });
         map.addLayer(layer);
     });
-
 
     it('should show', function (done) {
         var layer = new maptalks.HeatLayer('g', data, { visible : false });
@@ -100,7 +101,7 @@ describe('Layer', function () {
 
     it('should can add point', function (done) {
         var layer = new maptalks.HeatLayer('g');
-        layer.once('layerload', function () {
+        layer.once('add', function () {
             expect(layer).not.to.be.painted();
             layer.once('layerload', function () {
                 expect(layer).to.be.painted();
@@ -113,7 +114,7 @@ describe('Layer', function () {
 
     it('should can set data', function (done) {
         var layer = new maptalks.HeatLayer('g');
-        layer.once('layerload', function () {
+        layer.once('add', function () {
             expect(layer).not.to.be.painted();
             layer.once('layerload', function () {
                 expect(layer).to.be.painted();
@@ -158,8 +159,10 @@ describe('Layer', function () {
         })
         .setData([[0, 0, 2]])
         .addTo(map);
-        expect(layer).to.be.painted(0, 0, [0, 129, 255]);
-        layer.setData([[0, 0, 5], [0, 0, 5]]);
-        expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+        layer.once('layerload', function () {
+            expect(layer).to.be.painted(0, 0, [0, 129, 255]);
+            layer.setData([[0, 0, 5], [0, 0, 5]]);
+            expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+        });
     });
 });
