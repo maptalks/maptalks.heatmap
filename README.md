@@ -1,5 +1,7 @@
 # maptalks.heatmap
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/maptalks/maptalks.heatmap.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://circleci.com/gh/maptalks/maptalks.heatmap.svg?style=shield)](https://circleci.com/gh/maptalks/maptalks.heatmap)
 [![NPM Version](https://img.shields.io/npm/v/maptalks.heatmap.svg)](https://github.com/maptalks/maptalks.heatmap)
 
