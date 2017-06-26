@@ -41,7 +41,7 @@
     "mocha": "^3.4.2"
   },
   "peerDependencies": {
-    "maptalks": "^0.25.0"
+    "maptalks": "^0.26.0"
   },
   "dependencies": {
     "simpleheat": "^0.4.0"
