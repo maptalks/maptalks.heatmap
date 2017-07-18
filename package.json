@@ -1,6 +1,6 @@
 {
   "name": "maptalks.heatmap",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A heatmap layer plugin for maptalks.js. ",
   "license": "MIT",
   "repository": {
