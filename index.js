@@ -48,7 +48,6 @@ export class HeatLayer extends maptalks.Layer {
     }
 
     onConfig(conf) {
-        super.onConfig.apply(this, arguments);
         for (const p in conf) {
             if (options[p]) {
                 return this.redraw();
