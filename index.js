@@ -253,8 +253,10 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
     }
 
     onResize() {
-        this._heater._width  = this.canvas.width;
-        this._heater._height = this.canvas.height;
+        if (this.canvas) {
+            this._heater._width  = this.canvas.width;
+            this._heater._height = this.canvas.height;
+        }
         super.onResize.apply(this, arguments);
     }
 
