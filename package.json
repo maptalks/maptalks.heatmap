@@ -1,6 +1,6 @@
 {
   "name": "maptalks.heatmap",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A heatmap layer plugin for maptalks.js. ",
   "license": "MIT",
   "repository": {
@@ -8,8 +8,8 @@
     "url": "https://github.com/maptalks/maptalks.heatmap.git"
   },
   "main": "dist/maptalks.heatmap.js",
-  "module" : "dist/maptalks.heatmap.es.js",
-  "jsnext:main" : "dist/maptalks.heatmap.es.js",
+  "module": "dist/maptalks.heatmap.es.js",
+  "jsnext:main": "dist/maptalks.heatmap.es.js",
   "scripts": {
     "preversion": "npm test",
     "version": "gulp minify && git add -A dist",

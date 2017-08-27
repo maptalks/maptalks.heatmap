@@ -6,11 +6,7 @@
 /*!
  * requires maptalks@^0.25.0 
  */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('maptalks')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'maptalks'], factory) :
-	(factory((global.maptalks = {}),global.maptalks));
-}(this, (function (exports,maptalks) { 'use strict';
+import { Coordinate, Extent, Layer, Point, Util, renderer } from 'maptalks';
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -214,7 +210,7 @@ var HeatLayer = function (_maptalks$Layer) {
             return this;
         }
         if (heat[0] && Array.isArray(heat[0])) {
-            maptalks.Util.pushIn(this._heats, heat);
+            Util.pushIn(this._heats, heat);
         } else {
             this._heats.push(heat);
         }
@@ -270,14 +266,14 @@ var HeatLayer = function (_maptalks$Layer) {
         };
         var data = this.getData();
         if (options['clipExtent']) {
-            var clipExtent = new maptalks.Extent(options['clipExtent']);
+            var clipExtent = new Extent(options['clipExtent']);
             var r = this._getHeatRadius();
             if (r) {
                 clipExtent = clipExtent._expand(r);
             }
             var clipped = [];
             for (var i = 0, len = data.length; i < len; i++) {
-                if (clipExtent.contains(new maptalks.Coordinate(data[i][0], data[i][1]))) {
+                if (clipExtent.contains(new Coordinate(data[i][0], data[i][1]))) {
                     clipped.push(data[i]);
                 }
             }
@@ -314,7 +310,7 @@ var HeatLayer = function (_maptalks$Layer) {
     };
 
     return HeatLayer;
-}(maptalks.Layer);
+}(Layer);
 
 HeatLayer.mergeOptions(options);
 
@@ -381,7 +377,7 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
         var data = [],
             r = this._heater._r,
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
-            maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
+            maxZoom = Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
             v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
             cellSize = r / 2,
             grid = [],
@@ -396,13 +392,13 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
             y = void 0,
             k = void 0;
         displayExtent = displayExtent.expand(r).convertTo(function (c) {
-            return new maptalks.Point(map._containerPointToPrj(c));
+            return new Point(map._containerPointToPrj(c));
         });
         this._heatRadius = r;
         for (var i = 0, l = heats.length; i < l; i++) {
             heat = heats[i];
             if (!this._heatViews[i]) {
-                this._heatViews[i] = projection.project(new maptalks.Coordinate(heat[0], heat[1]));
+                this._heatViews[i] = projection.project(new Coordinate(heat[0], heat[1]));
             }
             p = this._heatViews[i];
             if (displayExtent.contains(p)) {
@@ -461,12 +457,8 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
     };
 
     return _class;
-}(maptalks.renderer.CanvasRenderer));
+}(renderer.CanvasRenderer));
 
-exports.HeatLayer = HeatLayer;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+export { HeatLayer };
 
 typeof console !== 'undefined' && console.log('maptalks.heatmap v0.5.3, requires maptalks@^0.25.0.');
-
-})));
