@@ -9,7 +9,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('maptalks')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'maptalks'], factory) :
-	(factory((global.maptalks = {}),global.maptalks));
+	(factory((global.maptalks = global.maptalks || {}),global.maptalks));
 }(this, (function (exports,maptalks) { 'use strict';
 
 function createCommonjsModule(fn, module) {
