@@ -30,7 +30,7 @@ describe('Layer', function () {
             expect(layer).to.be.painted();
             done();
         })
-        .addTo(map);
+            .addTo(map);
     });
 
     it('should display if added again after removed', function (done) {
@@ -96,7 +96,7 @@ describe('Layer', function () {
             expect(copy).to.be.painted();
             done();
         })
-        .addTo(map);
+            .addTo(map);
     });
 
     it('should can add point', function (done) {
@@ -109,7 +109,7 @@ describe('Layer', function () {
             });
             layer.addPoint([0, 0, 1]);
         })
-        .addTo(map);
+            .addTo(map);
     });
 
     it('should can set data', function (done) {
@@ -122,7 +122,7 @@ describe('Layer', function () {
             });
             layer.setData([[0, 0, 1]]);
         })
-        .addTo(map);
+            .addTo(map);
     });
 
     it('should update when setting data', function (done) {
@@ -135,8 +135,8 @@ describe('Layer', function () {
             });
             layer.setData([[0, 0, 5], [0, 0, 5]]);
         })
-        .setData([[0, 0, 2]])
-        .addTo(map);
+            .setData([[0, 0, 2]])
+            .addTo(map);
     });
 
     it('should update when adding more points', function (done) {
@@ -149,16 +149,16 @@ describe('Layer', function () {
             });
             layer.addPoint([[0, 0, 5], [0, 0, 5]]);
         })
-        .setData([[0, 0, 2]])
-        .addTo(map);
+            .setData([[0, 0, 2]])
+            .addTo(map);
     });
 
     it('should update immediately with drawImmediate options', function () {
         var layer = new maptalks.HeatLayer('g', {
             'drawImmediate' : true
         })
-        .setData([[0, 0, 2]])
-        .addTo(map);
+            .setData([[0, 0, 2]])
+            .addTo(map);
         layer.once('layerload', function () {
             expect(layer).to.be.painted(0, 0, [0, 129, 255]);
             layer.setData([[0, 0, 5], [0, 0, 5]]);

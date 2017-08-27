@@ -214,7 +214,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
 
                 alt =
                     heat.alt !== undefined ? heat.alt :
-                    heat[2] !== undefined ? +heat[2] : 1;
+                        heat[2] !== undefined ? +heat[2] : 1;
                 k = alt * v;
 
                 grid[y] = grid[y] || [];

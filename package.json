@@ -8,6 +8,8 @@
     "url": "https://github.com/maptalks/maptalks.heatmap.git"
   },
   "main": "dist/maptalks.heatmap.js",
+  "module" : "dist/maptalks.heatmap.es.js",
+  "jsnext:main" : "dist/maptalks.heatmap.es.js",
   "scripts": {
     "preversion": "npm test",
     "version": "gulp minify && git add -A dist",
@@ -36,7 +38,7 @@
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.1",
     "maptalks": "^0.25.0",
-    "maptalks-build-helpers": "^0.3.0",
+    "maptalks-build-helpers": "^0.4.1",
     "minimist": "^1.2.0",
     "mocha": "^3.5.0"
   },
