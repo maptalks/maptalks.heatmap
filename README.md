@@ -35,8 +35,8 @@ var heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
 
 ```javascript
 import { HeatLayer } from 'maptalks.heatmap';
-var data = [[0, 0, 0.3], [0, 0, 0.4], [0, 0, 0.4]];
-var heatLayer = new HeatLayer('heat', data).addTo(map);
+const data = [[0, 0, 0.3], [0, 0, 0.4], [0, 0, 0.4]];
+const heatLayer = new HeatLayer('heat', data).addTo(map);
 ```
 
 ## Supported Browsers
