@@ -20,6 +20,8 @@ A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatm
 ## Usage
 
 As a plugin, ```maptalks.heatmap``` must be loaded after ```maptalks.js``` in browsers.
+
+### Vanilla Javascript
 ```html
 <script type="text/javascript" src="https://unpkg.com/maptalks/dist/maptalks.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/maptalks.heatmap/dist/maptalks.heatmap.min.js"></script>
@@ -27,6 +29,14 @@ As a plugin, ```maptalks.heatmap``` must be loaded after ```maptalks.js``` in br
 var data = [[0, 0, 0.3], [0, 0, 0.4], [0, 0, 0.4]];
 var heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
 </script>
+```
+
+### ES6
+
+```javascript
+import { HeatLayer } from 'maptalks.heatmap';
+var data = [[0, 0, 0.3], [0, 0, 0.4], [0, 0, 0.4]];
+var heatLayer = new HeatLayer('heat', data).addTo(map);
 ```
 
 ## Supported Browsers
@@ -37,7 +47,7 @@ IE 9-11, Chrome, Firefox, other modern and mobile browsers.
 
 ### `Constructor`
 
-```HeatmapLayer``` is a subclass of [maptalks.Layer](https://maptalks.github.io/docs/api/Layer.html) and inherits all the methods of its parent.
+```HeatmapLayer``` is a subclass of [maptalks.Layer](https://maptalks.github.io/maptalks.js/api/0.x/Layer.html) and inherits all the methods of its parent.
 
 ```javascript
 new maptalks.HeatmapLayer(id, data, options)
@@ -51,7 +61,7 @@ new maptalks.HeatmapLayer(id, data, options)
     * blur **Number**  blur radius(15 by default)
     * minOpacity **Number** minimum point opacity (0.05 by default)
     * gradient **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
-    * Other options defined in [maptalks.Layer](https://maptalks.github.io/docs/api/Layer.html)
+    * Other options defined in [maptalks.Layer](https://maptalks.github.io/maptalks.js/api/0.x/Layer.html)
 
 ### `config(key, value)`
 
