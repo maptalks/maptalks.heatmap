@@ -18,11 +18,9 @@ gulp.task('watch', ['build'], () => {
     gulp.watch(['index.js', './gulpfile.js'], ['build']);
 });
 
-gulp.task('runTest', () => {
+gulp.task('test', ['build'], () => {
     testHelper.test(karmaConfig);
 });
-
-gulp.task('test', ['build', 'runTest']);
 
 gulp.task('tdd', ['build'], () => {
     karmaConfig.singleRun = false;
