@@ -12,6 +12,7 @@ const options = {
     },
     'radius' : 25,
     'blur' : 15,
+    'heatValueScale': 1,
     'minOpacity' : 0.05
 };
 
@@ -191,14 +192,12 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
         const data = [],
             r = this._heater._r,
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
-            maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
-            v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
             cellSize = r / 2,
             grid = [],
             panePos = map.offsetPlatform(),
             offsetX = panePos.x % cellSize,
             offsetY = panePos.y % cellSize;
-        let heat, p, alt, cell, x, y, k;
+        let heat, p, cell, x, y, k;
         displayExtent = displayExtent.expand(r).convertTo(c => new maptalks.Point(map._containerPointToPrj(c)));
         this._heatRadius = r;
         for (let i = 0, l = heats.length; i < l; i++) {
@@ -212,10 +211,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
                 x = Math.floor((p.x - offsetX) / cellSize) + 2;
                 y = Math.floor((p.y - offsetY) / cellSize) + 2;
 
-                alt =
-                    heat.alt !== undefined ? heat.alt :
-                        heat[2] !== undefined ? +heat[2] : 1;
-                k = alt * v;
+                k = (heat[2] !== undefined ? +heat[2] : 0.1) * layer.options['heatValueScale'];
 
                 grid[y] = grid[y] || [];
                 cell = grid[y][x];

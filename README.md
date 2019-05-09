@@ -60,6 +60,7 @@ new maptalks.HeatmapLayer(id, data, options)
     * radius **Number** point radius(25 by default)
     * blur **Number**  blur radius(15 by default)
     * minOpacity **Number** minimum point opacity (0.05 by default)
+    * heatValueScale **Number** the scale value to multiply with heat data (1 by default)
     * gradient **Object** set gradient colors as {\<stop\>: '\<color\>'}, default by { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
     * Other options defined in [maptalks.Layer](https://maptalks.github.io/maptalks.js/api/0.x/Layer.html)
 

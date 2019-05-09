@@ -35,6 +35,7 @@ var map = new maptalks.Map("map",{
 
 var data = addressPoints.map(function (p) { return [p[1], p[0]]; });
 var heatlayer = new maptalks.HeatLayer('heat', data, {
+    'heatValueScale': 0.7,
     'forceRenderOnRotating' : true,
     'forceRenderOnMoving' : true
 }).addTo(map);
