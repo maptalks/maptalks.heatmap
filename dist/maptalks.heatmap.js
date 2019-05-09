@@ -1,7 +1,7 @@
 /*!
- * maptalks.heatmap v0.5.4
+ * maptalks.heatmap v0.6.0
  * LICENSE : MIT
- * (c) 2016-2017 maptalks.org
+ * (c) 2016-2019 maptalks.org
  */
 /*!
  * requires maptalks@^0.25.0 
@@ -180,6 +180,7 @@ var options = {
     },
     'radius': 25,
     'blur': 15,
+    'heatValueScale': 1,
     'minOpacity': 0.05
 };
 
@@ -381,8 +382,6 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
         var data = [],
             r = this._heater._r,
             max = layer.options['max'] === undefined ? 1 : layer.options['max'],
-            maxZoom = maptalks.Util.isNil(layer.options['maxZoom']) ? map.getMaxZoom() : layer.options['maxZoom'],
-            v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - map.getZoom(), 12))),
             cellSize = r / 2,
             grid = [],
             panePos = map.offsetPlatform(),
@@ -390,7 +389,6 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
             offsetY = panePos.y % cellSize;
         var heat = void 0,
             p = void 0,
-            alt = void 0,
             cell = void 0,
             x = void 0,
             y = void 0,
@@ -410,8 +408,7 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
                 x = Math.floor((p.x - offsetX) / cellSize) + 2;
                 y = Math.floor((p.y - offsetY) / cellSize) + 2;
 
-                alt = heat.alt !== undefined ? heat.alt : heat[2] !== undefined ? +heat[2] : 1;
-                k = alt * v;
+                k = (heat[2] !== undefined ? +heat[2] : 0.1) * layer.options['heatValueScale'];
 
                 grid[y] = grid[y] || [];
                 cell = grid[y][x];
@@ -467,6 +464,6 @@ exports.HeatLayer = HeatLayer;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.heatmap v0.5.4, requires maptalks@^0.25.0.');
+typeof console !== 'undefined' && console.log('maptalks.heatmap v0.6.0, requires maptalks@^0.25.0.');
 
 })));
