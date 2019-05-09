@@ -128,9 +128,9 @@ describe('Layer', function () {
     it('should update when setting data', function (done) {
         var layer = new maptalks.HeatLayer('g');
         layer.once('layerload', function () {
-            expect(layer).to.be.painted(0, 0, [0, 129, 255]);
+            expect(layer).to.be.painted(0, 0, [255, 2, 0]);
             layer.once('layerload', function () {
-                expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+                expect(layer).to.be.painted(0, 0, [255, 2, 0]);
                 done();
             });
             layer.setData([[0, 0, 5], [0, 0, 5]]);
@@ -142,9 +142,9 @@ describe('Layer', function () {
     it('should update when adding more points', function (done) {
         var layer = new maptalks.HeatLayer('g');
         layer.once('layerload', function () {
-            expect(layer).to.be.painted(0, 0, [0, 129, 255]);
+            expect(layer).to.be.painted(0, 0, [255, 2, 0]);
             layer.once('layerload', function () {
-                expect(layer).to.be.painted(0, 0, [255, 3, 0]);
+                expect(layer).to.be.painted(0, 0, [255, 2, 0]);
                 done();
             });
             layer.addPoint([[0, 0, 5], [0, 0, 5]]);

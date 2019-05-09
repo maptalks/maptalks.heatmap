@@ -11,6 +11,8 @@
   "module": "dist/maptalks.heatmap.es.js",
   "jsnext:main": "dist/maptalks.heatmap.es.js",
   "scripts": {
+    "build": "gulp build",
+    "dev": "gulp watch",
     "preversion": "npm test",
     "version": "gulp minify && git add -A dist",
     "lint": "eslint index.js test/**/*.js",
