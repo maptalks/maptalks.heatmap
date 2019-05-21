@@ -441,11 +441,11 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
     };
 
     _class.prototype.onResize = function onResize() {
+        _maptalks$renderer$Ca.prototype.onResize.apply(this, arguments);
         if (this.canvas) {
             this._heater._width = this.canvas.width;
             this._heater._height = this.canvas.height;
         }
-        _maptalks$renderer$Ca.prototype.onResize.apply(this, arguments);
     };
 
     _class.prototype.onRemove = function onRemove() {

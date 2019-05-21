@@ -249,11 +249,11 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
     }
 
     onResize() {
+        super.onResize.apply(this, arguments);
         if (this.canvas) {
             this._heater._width  = this.canvas.width;
             this._heater._height = this.canvas.height;
         }
-        super.onResize.apply(this, arguments);
     }
 
     onRemove() {
