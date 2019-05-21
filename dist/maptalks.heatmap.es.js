@@ -1,5 +1,5 @@
 /*!
- * maptalks.heatmap v0.6.0
+ * maptalks.heatmap v0.6.1
  * LICENSE : MIT
  * (c) 2016-2019 maptalks.org
  */
@@ -458,4 +458,4 @@ HeatLayer.registerRenderer('canvas', function (_maptalks$renderer$Ca) {
 
 export { HeatLayer };
 
-typeof console !== 'undefined' && console.log('maptalks.heatmap v0.6.0, requires maptalks@^0.25.0.');
+typeof console !== 'undefined' && console.log('maptalks.heatmap v0.6.1, requires maptalks@^0.25.0.');
