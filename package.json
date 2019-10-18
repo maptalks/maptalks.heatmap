@@ -42,7 +42,7 @@
     "maptalks": "^0.25.0",
     "maptalks-build-helpers": "^0.4.2",
     "minimist": "^1.2.0",
-    "mocha": "^4.0.0"
+    "mocha": "^6.2.2"
   },
   "peerDependencies": {
     "maptalks": "^0.25.0"
