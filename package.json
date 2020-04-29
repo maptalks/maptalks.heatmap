@@ -37,7 +37,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-happen": "^0.1.0",
     "karma-ie-launcher": "^1.0.0",
-    "karma-mocha": "^1.3.0",
+    "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.1",
     "maptalks": "^0.25.0",
     "maptalks-build-helpers": "^0.4.2",
