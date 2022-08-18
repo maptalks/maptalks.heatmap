@@ -4,15 +4,16 @@
     "browser": true,
     "es6": true
   },
-  "parser": "babel-eslint",
+  "extends": "eslint:recommended",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module"
   },
-  "extends": "maptalks",
   "globals": {
   },
   "rules": {
     "no-var" : "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-undef": 0
   }
 }
