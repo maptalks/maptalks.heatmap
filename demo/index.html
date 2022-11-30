@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>maptalks.heatmap demo</title>
   <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.css">
@@ -7,39 +8,48 @@
   <script type="text/javascript" src="../dist/maptalks.heatmap.js"></script>
   <script type="text/javascript" src="realworld.10000.js"></script>
   <style>
-    html,body{
-        margin:0px;
-        height:100%;
-        width: 100%;
+    html,
+    body {
+      margin: 0px;
+      height: 100%;
+      width: 100%;
     }
-    #map { width: 100%; height: 100%; }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
+
 <body>
-<div id="map"></div>
-<script>
-//Inspired by Leaflet.Heat
-//https://github.com/Leaflet/Leaflet.heat
+  <div id="map"></div>
+  <script>
+    //Inspired by Leaflet.Heat
+    //https://github.com/Leaflet/Leaflet.heat
 
-var map = new maptalks.Map("map",{
-    center : [175.46873, -37.90258],
-    zoom   :  15,
-    attributionControl : {
-      'content' : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    },
-    baseLayer : new maptalks.TileLayer('tile',{
+    var map = new maptalks.Map("map", {
+      center: [175.46873, -37.90258],
+      zoom: 15,
+      attributionControl: {
+        'content': '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      },
+      baseLayer: new maptalks.TileLayer('tile', {
         urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        subdomains: ['a','b','c','d']
-    })
-});
+        subdomains: ['a', 'b', 'c', 'd']
+      })
+    });
 
-var data = addressPoints.map(function (p) { return [p[1], p[0]]; });
-var heatlayer = new maptalks.HeatLayer('heat', data, {
-    'heatValueScale': 0.7,
-    'forceRenderOnRotating' : true,
-    'forceRenderOnMoving' : true
-}).addTo(map);
+    var data = addressPoints.map(function (p) { return [p[1], p[0]]; });
+    var heatlayer = new maptalks.HeatLayer('heat', data, {
+      'heatValueScale': 0.7,
+      'forceRenderOnRotating': true,
+      'forceRenderOnMoving': true,
+      'forceRenderOnZooming': true,
+      'radius': 15,
+    }).addTo(map);
 
-</script>
+  </script>
 </body>
+
 </html>
