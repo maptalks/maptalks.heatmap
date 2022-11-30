@@ -2,18 +2,19 @@ import * as maptalks from 'maptalks';
 import simpleheat from 'simpleheat';
 
 const options = {
-    'max' : 1,
-    'gradient' : {
+    'max': 1,
+    'gradient': {
         0.4: 'blue',
         0.6: 'cyan',
         0.7: 'lime',
         0.8: 'yellow',
         1.0: 'red'
     },
-    'radius' : 25,
-    'blur' : 15,
+    'radius': 25,
+    'blur': 15,
     'heatValueScale': 1,
-    'minOpacity' : 0.05
+    'minOpacity': 0.05,
+    'hitDetect': false
 };
 
 export class HeatLayer extends maptalks.Layer {
@@ -89,9 +90,9 @@ export class HeatLayer extends maptalks.Layer {
             options = {};
         }
         const json = {
-            'type'      : this.getJSONType(),
-            'id'        : this.getId(),
-            'options'   : this.config()
+            'type': this.getJSONType(),
+            'id': this.getId(),
+            'options': this.config()
         };
         const data = this.getData();
         if (options['clipExtent']) {
@@ -176,6 +177,14 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             this.completeRender();
             return;
         }
+        //fix https://github.com/maptalks/maptalks.heatmap/issues/55
+        if (this._heater) {
+            const width = this._heater._width, height = this._heater._height;
+            if (Math.min(width, height) <= 0) {
+                this.completeRender();
+                return;
+            }
+        }
         const data = this._heatData(heats, displayExtent);
         this._heater.data(data).draw(layer.options['minOpacity']);
         this.completeRender();
@@ -195,10 +204,11 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
             cellSize = r / 2,
             grid = [],
             panePos = map.offsetPlatform(),
-            offsetX = panePos.x % cellSize,
-            offsetY = panePos.y % cellSize;
+            offsetX = Math.abs(panePos.x) % cellSize,
+            offsetY = Math.abs(panePos.y) % cellSize;
         let heat, p, cell, x, y, k;
-        displayExtent = displayExtent.expand(r).convertTo(c => new maptalks.Point(map._containerPointToPrj(c)));
+        // displayExtent = displayExtent.expand(r).convertTo(c => new maptalks.Point(map._containerPointToPrj(c)));
+        const { xmin, ymin, xmax, ymax } = displayExtent.expand(r);
         this._heatRadius = r;
         for (let i = 0, l = heats.length; i < l; i++) {
             heat = heats[i];
@@ -206,28 +216,32 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
                 this._heatViews[i] = projection.project(new maptalks.Coordinate(heat[0], heat[1]));
             }
             p = this._heatViews[i];
-            if (displayExtent.contains(p)) {
-                p = map._prjToContainerPoint(p);
-                x = Math.floor((p.x - offsetX) / cellSize) + 2;
-                y = Math.floor((p.y - offsetY) / cellSize) + 2;
-
-                k = (heat[2] !== undefined ? +heat[2] : 0.1) * layer.options['heatValueScale'];
-
-                grid[y] = grid[y] || [];
-                cell = grid[y][x];
-
-                if (!cell) {
-                    grid[y][x] = [p.x, p.y, k];
-
-                } else {
-                    cell[0] = (cell[0] * cell[2] + (p.x) * k) / (cell[2] + k); // x
-                    cell[1] = (cell[1] * cell[2] + (p.y) * k) / (cell[2] + k); // y
-                    cell[2] += k; // cumulated intensity value
-                }
+            //fix https://github.com/maptalks/maptalks.heatmap/issues/54
+            // if (displayExtent.contains(p)) {
+            p = map._prjToContainerPoint(p);
+            if (p.x < xmin || p.x > xmax || p.y < ymin || p.y > ymax) {
+                continue;
             }
+            x = Math.floor((p.x - offsetX) / cellSize) + 2;
+            y = Math.floor((p.y - offsetY) / cellSize) + 2;
+
+            k = (heat[2] !== undefined ? +heat[2] : 0.1) * layer.options['heatValueScale'];
+
+            grid[y] = grid[y] || [];
+            cell = grid[y][x];
+
+            if (!cell) {
+                grid[y][x] = [p.x, p.y, k];
+
+            } else {
+                cell[0] = (cell[0] * cell[2] + (p.x) * k) / (cell[2] + k); // x
+                cell[1] = (cell[1] * cell[2] + (p.y) * k) / (cell[2] + k); // y
+                cell[2] += k; // cumulated intensity value
+            }
+            // }
         }
         for (let i = 0, l = grid.length; i < l; i++) {
-            if (grid[i]) {
+            if (grid[i] && grid[i].length) {
                 for (let j = 0, ll = grid[i].length; j < ll; j++) {
                     cell = grid[i][j];
                     if (cell) {
@@ -251,7 +265,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
     onResize() {
         super.onResize.apply(this, arguments);
         if (this.canvas) {
-            this._heater._width  = this.canvas.width;
+            this._heater._width = this.canvas.width;
             this._heater._height = this.canvas.height;
         }
     }
