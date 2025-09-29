@@ -10,6 +10,7 @@ A plugin of [maptalks.js](https://github.com/maptalks/maptalks.js) to draw heatm
 ## Examples
 
 * A heatmap of [50000 points](https://maptalks.github.io/maptalks.heatmap/demo/). (data from [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat))
+* Heatmap of [50000 points](https://maptalks.github.io/maptalks.heatmap/demo/gl.html) rendered by WebGL (with maptalks-gl)
 
 ## Install
   

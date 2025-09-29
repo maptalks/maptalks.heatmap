@@ -3,6 +3,26 @@ const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('rollup-plugin-terser').terser;
 const pkg = require('./package.json');
 
+
+function glsl() {
+    return {
+        transform(code, id) {
+            if (/\.vert$/.test(id) === false && /\.frag$/.test(id) === false && /\.glsl$/.test(id) === false) return null;
+            let transformedCode = JSON.stringify(code.trim()
+                .replace(/\r/g, '')
+                .replace(/[ \t]*\/\/.*\n/g, '') // remove //
+                .replace(/[ \t]*\/\*[\s\S]*?\*\//g, '') // remove /* */
+                .replace(/\n{2,}/g, '\n')); // # \n+ to \n;;
+            transformedCode = `export default ${transformedCode};`;
+            return {
+                code: transformedCode,
+                map: { mappings: '' }
+            };
+        }
+    };
+}
+
+
 const production = process.env.BUILD === 'production';
 const outputFile = production ? 'dist/maptalks.heatmap.js' : 'dist/maptalks.heatmap.js';
 const outputESFile = 'dist/maptalks.heatmap.es.js'
@@ -46,6 +66,7 @@ module.exports = [
     {
         input: 'index.js',
         plugins: [
+            glsl(),
             resolve({
                 browser: true,
                 preferBuiltins: false
@@ -56,10 +77,11 @@ module.exports = [
                 ignoreGlobal: true
             })
         ].concat(plugins),
-        external: ['maptalks'],
+        external: ['maptalks', '@maptalks/gl'],
         output: {
             globals: {
-                'maptalks': 'maptalks'
+                'maptalks': 'maptalks',
+                '@maptalks/gl': 'maptalks'
             },
             banner,
             outro,
@@ -70,12 +92,13 @@ module.exports = [
             sourcemap: production ? false : 'inline',
         },
         watch: {
-            include: ['index.js']
+            include: ['index.js', '**/*/*.vert', '**/*/*.frag', '**/*/*.wgsl']
         }
     },
     {
         input: 'index.js',
         plugins: [
+            glsl(),
             resolve({
                 browser: true,
                 preferBuiltins: false
@@ -86,10 +109,11 @@ module.exports = [
                 ignoreGlobal: true
             })
         ].concat(plugins),
-        external: ['maptalks'],
+        external: ['maptalks', '@maptalks/gl'],
         output: {
             globals: {
-                'maptalks': 'maptalks'
+                'maptalks': 'maptalks',
+                '@maptalks/gl': 'maptalks'
             },
             banner,
             outro,
