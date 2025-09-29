@@ -89,7 +89,7 @@ module.exports = [
             name: 'maptalks',
             file: outputFile,
             format: 'umd',
-            sourcemap: production ? false : 'inline',
+            sourcemap: true,
         },
         watch: {
             include: ['index.js', '**/*/*.vert', '**/*/*.frag', '**/*/*.wgsl']
@@ -121,7 +121,7 @@ module.exports = [
             name: 'maptalks',
             file: outputESFile,
             format: 'es',
-            sourcemap: production ? false : 'inline',
+            sourcemap: true,
         },
         watch: {
             include: ['index.js']

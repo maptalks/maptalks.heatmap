@@ -1,4 +1,5 @@
 /**/*
 !dist/*.js
+!dist/*.map
 !dist/*.css
 !ACKNOWLEDGEMENT
