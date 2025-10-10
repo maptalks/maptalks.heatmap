@@ -24,8 +24,8 @@ function glsl() {
 
 
 const production = process.env.BUILD === 'production';
-const outputFile = production ? 'dist/maptalks.heatmap.js' : 'dist/maptalks.heatmap.js';
-const outputESFile = 'dist/maptalks.heatmap.es.js'
+const outputFile = pkg.main;
+const outputESFile = pkg.module;
 const plugins = [
     ].concat(production ? [
     removeGlobal(),
