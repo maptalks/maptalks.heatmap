@@ -22,6 +22,25 @@ function glsl() {
     };
 }
 
+function wgsl() {
+    return {
+        transform(code, id) {
+            if (/\.wgsl$/.test(id) === false) return null;
+            let transformedCode = JSON.stringify(code.trim()
+                // .replace(/(^\s*)|(\s*$)/gm, '')
+                .replace(/\r/g, '')
+                .replace(/[ \t]*\/\/.*\n/g, '') // remove //
+                .replace(/[ \t]*\/\*[\s\S]*?\*\//g, '') // remove /* */
+                .replace(/\n{2,}/g, '\n')); // # \n+ to \n;;
+            transformedCode = `export default ${transformedCode};`;
+            return {
+                code: transformedCode,
+                map: { mappings: '' }
+            };
+        }
+    };
+}
+
 
 const production = process.env.BUILD === 'production';
 const outputFile = pkg.main;
@@ -67,6 +86,7 @@ module.exports = [
         input: 'index.js',
         plugins: [
             glsl(),
+            wgsl(),
             resolve({
                 browser: true,
                 preferBuiltins: false
@@ -99,6 +119,7 @@ module.exports = [
         input: 'index.js',
         plugins: [
             glsl(),
+            wgsl(),
             resolve({
                 browser: true,
                 preferBuiltins: false

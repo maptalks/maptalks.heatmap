@@ -6,6 +6,11 @@ import frag from './glsl/points.frag';
 import gradientVert from './glsl/gradient.vert';
 import gradientFrag from './glsl/gradient.frag';
 
+import wgslVert from './wgsl/points_vert.wgsl';
+import wgslFrag from './wgsl/points_frag.wgsl';
+import wgslGradientVert from './wgsl/gradient_vert.wgsl';
+import wgslGradientFrag from './wgsl/gradient_frag.wgsl';
+
 const options = {
     'max': 1,
     'gradient': {
@@ -318,7 +323,7 @@ HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRende
 });
 
 if (typeof CanvasCompatible !== 'undefined') {
-    HeatLayer.registerRenderer('gl', class extends CanvasCompatible(maptalks.renderer.LayerAbstractRenderer) {
+    const HeatLayerGLRenderer = class extends CanvasCompatible(maptalks.renderer.LayerAbstractRenderer) {
         drawOnInteracting(event, timestamp, parentContext) {
             this.draw(timestamp, parentContext);
         }
@@ -412,17 +417,27 @@ if (typeof CanvasCompatible !== 'undefined') {
                 viewport
             }
             this._pointShader = new reshader.MeshShader({
+                name: 'heatmap-point',
                 vert,
                 frag,
+                wgslVert,
+                wgslFrag,
                 extraCommandProps
             });
 
             this._gradientShader = new reshader.MeshShader({
+                name: 'heatmap-gradient',
                 vert: gradientVert,
                 frag: gradientFrag,
+                wgslVert: wgslGradientVert,
+                wgslFrag: wgslGradientFrag,
                 extraCommandProps: {
                     blend: {
-                        enable: false,
+                        enable: true,
+                        func: {
+                            src: 1,
+                            dst: 'one minus src alpha'
+                        }
                     },
                     depth: {
                         enable: false,
@@ -446,16 +461,20 @@ if (typeof CanvasCompatible !== 'undefined') {
         }
 
         _initBuffers() {
+            const map = this.getMap();
+            const isWebGPU = map.getRenderer().isWebGPU();
             const vertexSize = 2;
             const offsetSize = 2;
             const intensitySize = 1;
             const positionBufferData = new Float32Array(
                 this.maxPointCount * vertexSize * 6
             );
-            const offsetBufferData = new Int16Array(
+            const offsetBufferData = new Float32Array(
                 this.maxPointCount * offsetSize * 6
             );
-            const intensityBufferData = new Uint8Array(
+            const intensityBufferData = isWebGPU ? new Float32Array(
+                this.maxPointCount * intensitySize * 6
+            ) : new Uint8Array(
                 this.maxPointCount * intensitySize * 6
             );
             return { positionBufferData, offsetBufferData, intensityBufferData };
@@ -484,9 +503,7 @@ if (typeof CanvasCompatible !== 'undefined') {
                 min: 'nearest',
                 mag: 'nearest',
                 width: canvas.width,
-                height: canvas.height,
-                // needed by webgpu
-                sampleCount: 4
+                height: canvas.height
             });
             this._fbo = this.device.framebuffer({
                 width: canvas.width,
@@ -636,7 +653,9 @@ if (typeof CanvasCompatible !== 'undefined') {
             delete this._gradientScene;
             super.onRemove();
         }
-    });
+    };
+    HeatLayer.registerRenderer('gl', HeatLayerGLRenderer);
+    HeatLayer.registerRenderer('gpu', HeatLayerGLRenderer);
 }
 
 function gradient(grad) {
