@@ -3,7 +3,7 @@
 <head>
   <title>maptalks.heatmap demo</title>
   <link type="text/css" rel="stylesheet" href="https://unpkg.com/maptalks/dist/maptalks.css">
-  <script type="text/javascript" src="https://unpkg.com/maptalks-gl/dist/maptalks-gl.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/maptalks-gpu/dist/maptalks-gpu.js"></script>
   <script type="text/javascript" src="https://unpkg.com/maptalks.heatmap/dist/maptalks.heatmap.js"></script>
   <script type="text/javascript" src="realworld.10000.js"></script>
   <style>
@@ -24,7 +24,8 @@
 var map = new maptalks.Map("map",{
     center : [175.46873, -37.90258],
     zoom   :  15,
-    onlyWebGL1: true,
+    renderer: 'gpu',
+
     attributionControl : {
       'content' : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     },
@@ -36,7 +37,6 @@ var map = new maptalks.Map("map",{
 
 var data = addressPoints.map(function (p) { return [p[1], p[0]]; });
 var heatlayer = new maptalks.HeatLayer('heat', data, {
-    'renderer': 'gl',
     'heatValueScale': 0.7,
     'forceRenderOnRotating' : true,
     'forceRenderOnMoving' : true
