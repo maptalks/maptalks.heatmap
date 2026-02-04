@@ -168,8 +168,6 @@ export class HeatLayer extends maptalks.Layer {
     }
 }
 
-HeatLayer.mergeOptions(options);
-
 HeatLayer.registerJSONType('HeatLayer');
 
 HeatLayer.registerRenderer('canvas', class extends maptalks.renderer.CanvasRenderer {
@@ -340,7 +338,7 @@ if (typeof CanvasCompatible !== 'undefined') {
                 }
                 this._updateGeometryData();
             }
-            const fbo = parentContext && parentContext.renderTarget && context.renderTarget.fbo;
+            const fbo = parentContext && parentContext.renderTarget && parentContext.renderTarget.fbo;
             this._clearFBO();
             this._geometry.setDrawCount(this.pointCount * 6);
             const map = this.getMap();
@@ -656,6 +654,7 @@ if (typeof CanvasCompatible !== 'undefined') {
     };
     HeatLayer.registerRenderer('gl', HeatLayerGLRenderer);
     HeatLayer.registerRenderer('gpu', HeatLayerGLRenderer);
+    options.renderer = 'gl';
 }
 
 function gradient(grad) {
@@ -680,3 +679,5 @@ function gradient(grad) {
         height: canvas.height
     };
 }
+
+HeatLayer.mergeOptions(options);
